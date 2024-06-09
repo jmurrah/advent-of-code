@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 
-def find_number(line: str):
+def find_number(line: str) -> int:
     digits = {
         "one": "1",
         "two": "2",

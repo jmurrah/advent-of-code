@@ -5,24 +5,60 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"unicode"
 )
 
-func find_number(line string) string {
-	for _, character := range line {
-		if unicode.IsDigit(rune(character)) {
-			return string(character)
+func find_max(locations map[int]string) int {
+	max := -1
+	for i := range locations {
+		if i > max {
+			max = i
 		}
 	}
-	return ""
+	return max
 }
 
-func reverse(s string) string {
-	runes := []rune(s)
-	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
-		runes[i], runes[j] = runes[j], runes[i]
+func find_min(locations map[int]string) int {
+	min := 100000
+	for i := range locations {
+		if i < min {
+			min = i
+		}
 	}
-	return string(runes)
+	return min
+}
+
+func find_number(line string) int {
+	digits := map[string]string{
+		"one":   "1",
+		"two":   "2",
+		"three": "3",
+		"four":  "4",
+		"five":  "5",
+		"six":   "6",
+		"seven": "7",
+		"eight": "8",
+		"nine":  "9",
+	}
+	locations := make(map[int]string)
+
+	for i := 0; i < len(line); i++ {
+		for j := 1; j < 6; j++ {
+			if i+j > len(line) {
+				break
+			}
+			substring := line[i : i+j]
+			if value, ok := digits[substring]; ok {
+				locations[i] = value
+				break
+			} else if _, err := strconv.Atoi(substring); err == nil {
+				locations[i] = substring
+				break
+			}
+		}
+	}
+
+	number, _ := strconv.Atoi(locations[find_min(locations)] + locations[find_max(locations)])
+	return number
 }
 
 func main() {
@@ -30,8 +66,7 @@ func main() {
 
 	total := 0
 	for _, line := range strings.Split(string(file), "\n") {
-		num, _ := strconv.Atoi(find_number(line) + find_number(reverse(line)))
-		total += num
+		total += find_number(line)
 	}
 
 	fmt.Println(total)
