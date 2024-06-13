@@ -1,5 +1,7 @@
-def get_numbers(data: list[str], indicies: list[tuple[int, int]]) -> list[tuple[int, int, int]]:
-    numbers = []
+def get_adj_numbers(
+    data: list[str], indicies: list[tuple[int, int]]
+) -> list[tuple[int, int, int]]:
+    adj_numbers = set()
 
     for index in indicies:
         i, j = index
@@ -12,22 +14,21 @@ def get_numbers(data: list[str], indicies: list[tuple[int, int]]) -> list[tuple[
             number += data[i][j]
             j += 1
 
-        numbers.append((start, i, int(number)))
+        adj_numbers.add((start, j, int(number)))
 
-    return numbers
+    return list(adj_numbers)
 
 
-def get_adjacent_digit_indicies(data: list[str], memory: dict[tuple[int, int], list[tuple[int, int]]], x: int, y: int) -> list[tuple[int, int]]:
-    if (x, y) in memory:
-        return memory[(x, y)]
-
+def get_adjacent_digit_indicies(
+    data: list[str], x: int, y: int
+) -> list[tuple[int, int]]:
     indicies = []
+
     for i in range(-1, 2):
         for j in range(-1, 2):
             if data[x + i][y + j].isdigit():
                 indicies.append((x + i, y + j))
 
-    memory[(x, y)] = indicies
     return indicies
 
 
@@ -35,13 +36,15 @@ if __name__ == "__main__":
     with open("input.txt") as file:
         data = file.readlines()
 
-    numbers, memory = [], {}
+    numbers = []
 
     for i, line in enumerate(data):
         for j, character in enumerate(line.strip()):
-            if not character.isdigit() and character != ".":
-                numbers.extend(
-                    get_numbers(data, get_adjacent_digit_indicies(data, memory, i, j))
+            if character == "*":
+                adj_numbers = get_adj_numbers(
+                    data, get_adjacent_digit_indicies(data, i, j)
                 )
+                if len(adj_numbers) == 2:
+                    numbers.append(adj_numbers[0][-1] * adj_numbers[1][-1])
 
-    print(sum([number[-1] for number in set(numbers)]))
+    print(sum(numbers))
