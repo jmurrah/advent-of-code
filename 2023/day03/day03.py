@@ -1,4 +1,4 @@
-def get_numbers(data, indicies) -> tuple[int, int, int]:
+def get_numbers(data: list[str], indicies: list[tuple[int, int]]) -> list[tuple[int, int, int]]:
     numbers = []
 
     for index in indicies:
@@ -17,7 +17,7 @@ def get_numbers(data, indicies) -> tuple[int, int, int]:
     return numbers
 
 
-def get_adjacent_digit_indicies(data, memory, x, y):
+def get_adjacent_digit_indicies(data: list[str], memory: dict[tuple[int, int], list[tuple[int, int]]], x: int, y: int) -> list[tuple[int, int]]:
     if (x, y) in memory:
         return memory[(x, y)]
 
