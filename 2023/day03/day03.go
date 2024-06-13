@@ -56,8 +56,8 @@ func get_adjacent_digit_indicies(data []string, x int, y int) []Tuple {
 
 	for i := x - 1; i <= x+1; i++ {
 		for j := y - 1; j <= y+1; j++ {
-			if x+i >= 0 && x+i < len(data) && y+j >= 0 && y+j < len(data[i]) && unicode.IsDigit(rune(data[x+i][y+j])) {
-				indicies = append(indicies, Tuple{X: x + i, Y: y + j})
+			if unicode.IsDigit(rune(data[i][j])) {
+				indicies = append(indicies, Tuple{X: i, Y: j})
 			}
 		}
 	}
@@ -73,7 +73,7 @@ func main() {
 
 	for i, line := range data {
 		for j, character := range line {
-			if string(character) == "*" {
+			if character == '*' {
 				adjacent_numbers := get_adjacent_numbers(data, get_adjacent_digit_indicies(data, i, j))
 				if len(adjacent_numbers) == 2 {
 					numbers = append(numbers, adjacent_numbers[0].Z*adjacent_numbers[1].Z)
