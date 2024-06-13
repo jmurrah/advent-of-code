@@ -78,7 +78,6 @@ func main() {
 				if len(adjacent_numbers) == 2 {
 					numbers = append(numbers, adjacent_numbers[0].Z*adjacent_numbers[1].Z)
 				}
-
 			}
 		}
 	}
