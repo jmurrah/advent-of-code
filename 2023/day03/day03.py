@@ -1,7 +1,7 @@
-def get_adj_numbers(
+def get_adjacent_numbers(
     data: list[str], indicies: list[tuple[int, int]]
 ) -> list[tuple[int, int, int]]:
-    adj_numbers = set()
+    adjacent_numbers = set()
 
     for index in indicies:
         i, j = index
@@ -14,9 +14,9 @@ def get_adj_numbers(
             number += data[i][j]
             j += 1
 
-        adj_numbers.add((start, j, int(number)))
+        adjacent_numbers.add((start, j, int(number)))
 
-    return list(adj_numbers)
+    return list(adjacent_numbers)
 
 
 def get_adjacent_digit_indicies(
@@ -41,10 +41,10 @@ if __name__ == "__main__":
     for i, line in enumerate(data):
         for j, character in enumerate(line.strip()):
             if character == "*":
-                adj_numbers = get_adj_numbers(
+                adjacent_numbers = get_adjacent_numbers(
                     data, get_adjacent_digit_indicies(data, i, j)
                 )
-                if len(adj_numbers) == 2:
-                    numbers.append(adj_numbers[0][-1] * adj_numbers[1][-1])
+                if len(adjacent_numbers) == 2:
+                    numbers.append(adjacent_numbers[0][-1] * adjacent_numbers[1][-1])
 
     print(sum(numbers))
